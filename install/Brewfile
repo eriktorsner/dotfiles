@@ -8,7 +8,7 @@ brew "wp-cli"
 
 brew "perl"
 brew "rbenv"
-beew "pyenv"
+brew "pyenv"
 
 brew "git"
 brew "hub"
