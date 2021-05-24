@@ -1,0 +1,8 @@
+{
+    "tld": "local",
+    "loopback": "127.0.0.1",
+    "paths": [
+        "/Users/eriktorsner/src/deliciousbrains/braindev/www",
+        "/Users/eriktorsner/src/torgesta/wunderdev/www"
+    ]
+}

@@ -1,0 +1,15 @@
+tap "homebrew/cask"
+tap "homebrew/cask-drivers"
+tap "homebrew/cask-fonts"
+tap "homebrew/cask-versions"
+
+cask "dropbox"
+cask "bitwarden"
+cask "google-chrome"
+cask "brave-browser"
+cask "postman"
+cask "slack"
+cask "spotify"
+cask "virtualbox"
+cask "typora"
+
