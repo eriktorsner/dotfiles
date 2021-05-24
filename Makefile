@@ -34,7 +34,7 @@ ifndef GITHUB_ACTION
 	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 endif
 
-packages: brew-packages cask-apps node-packages
+packages: brew-packages cask-apps node-packages composer-apps
 
 link: stow-$(OS)
 	for FILE in $$(\ls -A runcom); do if [ -f $(HOME)/$$FILE -a ! -h $(HOME)/$$FILE ]; then \
@@ -55,9 +55,6 @@ brew:
 git: brew
 	brew install git git-extras
 
-ruby: brew
-	brew install ruby
-
 brew-packages: brew
 	brew bundle --file=$(DOTFILES_DIR)/install/Brewfile
 
@@ -65,8 +62,11 @@ cask-apps: brew
 	brew bundle --file=$(DOTFILES_DIR)/install/Caskfile || true
 	for EXT in $$(cat install/Codefile); do code --install-extension $$EXT; done
 
-node-packages: npm
-	. $(NVM_DIR)/nvm.sh; npm install -g $(shell cat install/npmfile)
+composer-apps: brew
+	for APP in $$(cat install/Composerfile); do composer global require $$APP; done	
+
+node-packages:
+	npm install -g $(shell cat install/npmfile)
 
 test:
 	. $(NVM_DIR)/nvm.sh; bats test
