@@ -5,3 +5,4 @@ system/.custom
 */Caskfile.lock.json
 .DS_Store
 */Brewfile.lock.json
+install/Brewfile.lock.json
