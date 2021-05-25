@@ -34,7 +34,7 @@ ifndef GITHUB_ACTION
 	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 endif
 
-packages: brew-packages cask-apps node-packages composer-apps
+packages: brew-packages cask-apps node-packages composer-apps mas-apps
 
 link: stow-$(OS)
 	for FILE in $$(\ls -A runcom); do if [ -f $(HOME)/$$FILE -a ! -h $(HOME)/$$FILE ]; then \
@@ -60,10 +60,12 @@ brew-packages: brew
 
 cask-apps: brew
 	brew bundle --file=$(DOTFILES_DIR)/install/Caskfile || true
-	for EXT in $$(cat install/Codefile); do code --install-extension $$EXT; done
 
 composer-apps: brew
 	for APP in $$(cat install/Composerfile); do composer global require $$APP; done	
+
+mas-apps: brew
+	for APP in $$(awk '{ print $$1 }' install/Masfile); do mas install $$APP; done
 
 node-packages:
 	npm install -g $(shell cat install/npmfile)
