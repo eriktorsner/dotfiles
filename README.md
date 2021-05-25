@@ -2,54 +2,39 @@
 
 These are my dotfiles. Take anything you want, but at your own risk.
 
-It mainly targets macOS systems, but it works on at least Ubuntu as well.
+It mainly targets macOS systems
 
-## Highlights
-
-- Minimal efforts to install everything, using a [Makefile](./Makefile)
-- Mostly based around Homebrew, Caskroom and Node.js, latest Bash + GNU Utils
-- Great [Window management](./config/hammerspoon/README.md) (using Hammerspoon)
-- Fast and colored prompt
-- Updated macOS defaults
-- Well-organized and easy to customize
-- The installation and runcom setup is
-  [tested weekly on real Ubuntu and macOS machines](https://github.com/webpro/dotfiles/actions) using
-  [a GitHub Action](./.github/workflows/ci.yml)
-
-## Packages Overview
-
-- [Homebrew](https://brew.sh) (packages: [Brewfile](./install/Brewfile))
-- [homebrew-cask](https://github.com/Homebrew/homebrew-cask) (packages: [Caskfile](./install/Caskfile))
-- [Node.js + npm LTS](https://nodejs.org/en/download/) (packages: [npmfile](./install/npmfile))
-- Latest Git, Bash 4, Python 3, GNU coreutils, curl, Ruby
-- [Hammerspoon](https://www.hammerspoon.org) (config: [keybindings & window management](./config/hammerspoon))
-- [Mackup](https://github.com/lra/mackup) (sync application settings)
-- `$EDITOR` (and Git editor) is [GNU nano](https://www.nano-editor.org)
 
 ## Installation
 
-On a sparkling fresh installation of macOS:
+On a sparkling fresh installation of macOS. First sign in to your Apple ID so that mas app manager can install App Store Apps. Then at the command prompt:
 
 ```bash
 sudo softwareupdate -i -a
 xcode-select --install
 ```
 
+Since we're lazy, add passwordless sudo
+
+```bash
+export VISUAL=nano
+sudo visudo /etc/sudoers.d/wheel
+```
+
+add the line 
+
+```bash
+%wheel    ALL=(ALL)   NOPASSWD: ALL
+```
+
 The Xcode Command Line Tools includes `git` and `make` (not available on stock macOS). Now there are two options:
 
-1. Install this repo with `curl` available:
+Alternatively, clone manually into the desired location:
 
 ```bash
-bash -c "`curl -fsSL https://raw.githubusercontent.com/webpro/dotfiles/master/remote-install.sh`"
+git clone https://github.com/eriktorsner/dotfiles.git ~/.dotfiles
 ```
 
-This will clone or download, this repo to `~/.dotfiles` depending on the availability of `git`, `curl` or `wget`.
-
-1. Alternatively, clone manually into the desired location:
-
-```bash
-git clone https://github.com/webpro/dotfiles.git ~/.dotfiles
-```
 
 Use the [Makefile](./Makefile) to install everything [listed above](#package-overview), and symlink [runcom](./runcom)
 and [config](./config) (using [stow](https://www.gnu.org/software/stow/)):
@@ -58,9 +43,6 @@ and [config](./config) (using [stow](https://www.gnu.org/software/stow/)):
 cd ~/.dotfiles
 make
 ```
-
-The installation process in the Makefile is tested on every push and every week in this
-[GitHub Action](https://github.com/webpro/dotfiles/actions).
 
 ## Post-Installation
 
@@ -92,8 +74,6 @@ Commands:
 You can put your custom settings, such as Git credentials in the `system/.custom` file which will be sourced from
 `.bash_profile` automatically. This file is in `.gitignore`.
 
-Alternatively, you can have an additional, personal dotfiles repo at `~/.extra`. The runcom `.bash_profile` sources all
-`~/.extra/runcom/*.sh` files.
 
 ## Additional Resources
 
