@@ -32,7 +32,7 @@ endif
 oh-my-zsh:
 	test -f $(HOME)/.oh-my-zsh/oh-my-zsh.sh ||curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash
 
-packages: brew-packages cask-apps node-packages composer-apps mas-apps
+packages: brew-packages cask-apps node-packages composer-apps mas-apps after
 
 brew:
 	is-executable brew || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
@@ -55,6 +55,9 @@ mas-apps: brew
 
 node-packages:
 	npm install -g $(shell cat install/npmfile)
+
+after:
+	for CMD in $$(cat install/after); do $$APP; done
 
 test:
 	. $(NVM_DIR)/nvm.sh; bats test
