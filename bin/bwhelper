@@ -1,0 +1,169 @@
+#!/usr/bin/env php
+<?php
+
+$cmd = !empty($argv[1]) ? $argv[1] : '';
+
+switch ($cmd) {
+	case 'status':
+		if (!status()) {
+			exit(1);
+		}
+		break;
+    case 'put':
+    	put($argv[2]);
+    	break;
+    case 'get':
+    	get($argv[2]);
+    	break;
+    case 'unlock':
+    	unlock();
+    	break;    	
+	defaullt:
+		echo "Command not recognized\n";
+		exit(1);
+}
+
+function status($echo = true) 
+{
+	$cmd = 'bw sync --nointeraction';
+	exec($cmd, $output, $return);
+	if (0 !== $return && $echo) {
+		echo "No valid BW session\n";
+		return false;
+	}
+
+	$folder = getFolder();
+	if (false === $folder && $echo) {
+		echo "No dotfiles folder found in BW vault\n";
+		return false;
+	}
+
+	return true;
+	
+}
+
+function getFolder()
+{
+	$cmd = "bw list folders --search dotfiles";
+	exec($cmd, $json);
+	$result = json_decode($json[0]);
+	if (empty($result)) {
+		return false;
+	}
+
+	foreach ($result as $folder) {
+		if (!empty($folder->name) && 'dotfiles' === $folder->name) {
+			return $folder->id;
+		}
+	}
+	return false;
+}
+
+function get($row)
+{
+	if (!status(false)) {
+		echo "No valid BW session\n";
+		return;
+	}
+
+	$row = str_replace("\t\t", "\t", $row);
+	$row = str_replace("\t\t", "\t", $row);
+	
+	$home              = getenv("HOME");
+	list($name, $path) = explode("\t", str_replace("\t\t", "\t", $row));
+	$resolvedPath      = str_replace('~', $home, $path);
+	$folderId          = getFolder();
+
+	// Find existing item in BW
+	$cmd = "bw list items --search \"{$name}\"";
+	exec($cmd, $json);
+	$result = json_decode($json[0]);
+
+	$existing = null;
+	foreach ($result as $hit) {
+		if (empty($hit->folderId) || $hit->folderId !== $folderId) {
+			continue;
+		}
+		if (empty($hit->name) || $hit->name !== $name) {
+			continue;
+		}
+		$existing = $hit;
+	}
+
+	if ($existing) {
+		exec("mkdir -p " . dirname($resolvedPath));
+		file_put_contents($resolvedPath, $existing->notes);
+	}
+}
+
+function put($row)
+{
+	if (!status(false)) {
+		echo "No valid BW session\n";
+		return;
+	}
+
+	$row = str_replace("\t\t", "\t", $row);
+	$row = str_replace("\t\t", "\t", $row);
+	
+	$home              = getenv("HOME");
+	list($name, $path) = explode("\t", str_replace("\t\t", "\t", $row));
+	$resolvedPath      = str_replace('~', $home, $path);
+	$folderId          = getFolder();
+
+	// Find existing item in BW
+	$cmd = "bw list items --search \"{$name}\"";
+	exec($cmd, $json);
+	$result = json_decode($json[0]);
+
+	$existing = null;
+	foreach ($result as $hit) {
+		if (empty($hit->folderId) || $hit->folderId !== $folderId) {
+			continue;
+		}
+		if (empty($hit->name) || $hit->name !== $name) {
+			continue;
+		}
+		$existing = $hit;
+	}
+
+	$item = json_encode((object)[
+		'object' => 'item',
+		'folderId' => $folderId,
+		'type' => 2,
+		'name' => $name,
+		'notes' => file_get_contents($resolvedPath),
+		'fields' => [
+			(object)[
+				'name' => 'path',
+				'value' => $path,
+				'type' => 0,
+			],
+		],
+		'secureNote' => (object)['type' => 0],
+	]);
+
+	if (!$existing) {
+		$cmd = "bw create item " . base64_encode($item);
+	} else {
+		$cmd = "bw edit item {$existing->id} " . base64_encode($item);
+	}
+
+	exec($cmd);
+}
+
+function getField($hit, $fieldName) {
+	if (empty($hit->fields)) {
+		return false;
+	}
+
+
+	foreach ($hit->fields as $field) {
+		if ($field->name === $fieldName) {
+			return $field->value;
+		}
+	}
+
+	return false;
+}
+
