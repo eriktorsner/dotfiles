@@ -1,1 +1,5 @@
-$(HOME)/.composer/vendor/bin/valet install
+
+if [[ ! $(HOME)/.composer/vendor/bin/valet | grep -q uninstall ]]; then
+	$(HOME)/.composer/vendor/bin/valet install
+	$(HOME)/.composer/vendor/bin/valet tld local
+fi
