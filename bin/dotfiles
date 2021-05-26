@@ -15,7 +15,7 @@ sub_help () {
   echo "   macos            Apply macOS system defaults"
   echo "   test             Run tests"
   echo "   update           Update packages and pkg managers (OS, brew, npm, gem)"
-  echo "   copy             Get .dotfiles from this repo and Bitwarden to home folder"  
+  echo "   restore          Restores .dotfiles from this repo and Bitwarden to home folder"  
   echo "   sync             Sync current dotfiles back to the repo and Bitwarden"
 }
 
@@ -51,7 +51,7 @@ sub_macos () {
   echo "Done. Some changes may require a logout/restart to take effect."
 }
 
-sub_sync () {
+sub_restore () {
   for FILE in $(cat sync/runcom); do 
     if [[ $FILE == *"/"* ]]; then
       FOLDER=`echo $FILE | awk -F "/" '{print $1}'`
