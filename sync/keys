@@ -1,0 +1,4 @@
+aws_credentials		~/.aws/credentials
+erik-laptop			~/.ssh/id_rsa
+erik-laptop-dsa		~/.ssh/id_dsa
+s3cmd				~/.s3cfg

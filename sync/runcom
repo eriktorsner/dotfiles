@@ -1,4 +1,12 @@
 .zlogin
+.zshrc
+.zshenv
 
 .ssh/config
 .ssh/known_hosts
+.ssh/id_rsa.pub
+.ssh/id_rsa.keystore
+.ssh/id_dsa.pub
+.ssh/id_dsa.keystore
+
+.aws/config
