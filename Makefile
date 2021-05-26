@@ -11,7 +11,9 @@ export ACCEPT_EULA=Y
 
 all: $(OS)
 
-macos: sudo core-macos packages
+macos: sudo core-macos oh-my-zsh packages
+
+linux: core-linux link
 
 core-macos: brew git
 
@@ -20,11 +22,6 @@ core-linux:
 	apt-get upgrade -y
 	apt-get dist-upgrade -f
 
-stow-macos: brew
-	is-executable stow || brew install stow
-
-stow-linux: core-linux
-	is-executable stow || apt-get -y install stow
 
 sudo:
 ifndef GITHUB_ACTION
@@ -32,20 +29,10 @@ ifndef GITHUB_ACTION
 	while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 endif
 
+oh-my-zsh:
+	test -f $(HOME)/.oh-my-zsh/oh-my-zsh.sh ||curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh | bash
+
 packages: brew-packages cask-apps node-packages composer-apps mas-apps
-
-link: stow-$(OS)
-	for FILE in $$(\ls -A runcom); do if [ -f $(HOME)/$$FILE -a ! -h $(HOME)/$$FILE ]; then \
-		mv -v $(HOME)/$$FILE{,.bak}; fi; done
-	mkdir -p $(XDG_CONFIG_HOME)
-	stow -t $(HOME) runcom
-	stow -t $(XDG_CONFIG_HOME) config
-
-unlink: stow-$(OS)
-	stow --delete -t $(HOME) runcom
-	stow --delete -t $(XDG_CONFIG_HOME) config
-	for FILE in $$(\ls -A runcom); do if [ -f $(HOME)/$$FILE.bak ]; then \
-		mv -v $(HOME)/$$FILE.bak $(HOME)/$${FILE%%.bak}; fi; done
 
 brew:
 	is-executable brew || curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh | bash
@@ -60,7 +47,8 @@ cask-apps: brew
 	brew bundle --file=$(DOTFILES_DIR)/install/Caskfile || true
 
 composer-apps: brew
-	for APP in $$(cat install/Composerfile); do composer global require $$APP; done	
+	for APP in $$(cat install/Composerfile); do composer global require $$APP; done
+	grep -qxF '$(HOME)/.composer/vendor/bin' /etc/paths || echo '$(HOME)/.composer/vendor/bin' | sudo tee -a /etc/paths
 
 mas-apps: brew
 	for APP in $$(awk '{ print $$1 }' install/Masfile); do mas install $$APP; done
@@ -70,3 +58,5 @@ node-packages:
 
 test:
 	. $(NVM_DIR)/nvm.sh; bats test
+
+
