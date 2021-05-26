@@ -57,7 +57,7 @@ sub_sync () {
       FOLDER=`echo $FILE | awk -F "/" '{print $1}'`
       mkdir -p runcom/$FOLDER
       rsync -a ~/$FILE runcom/$FOLDER/      
-    else
+    elsesyn
       rsync -a ~/$FILE runcom/      
     fi
   done 
@@ -84,7 +84,7 @@ sub_sync () {
 }
 
 sub_copy() {
-  rsync -a runcom/ ~/dotfiles
+  rsync -a runcom/ ~
   
   if ! bin/bwhelper status; then
     echo Can\t sync secrets from BitWarden - halting 
