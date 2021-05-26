@@ -57,7 +57,7 @@ sub_sync () {
       FOLDER=`echo $FILE | awk -F "/" '{print $1}'`
       mkdir -p runcom/$FOLDER
       rsync -a ~/$FILE runcom/$FOLDER/      
-    elsesyn
+    else
       rsync -a ~/$FILE runcom/      
     fi
   done 
