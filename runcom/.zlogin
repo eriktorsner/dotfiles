@@ -10,3 +10,7 @@ test -d "${GOPATH}/src/github.com" || mkdir -p "${GOPATH}/src/github.com"
 # Valet
 alias xdon="mv /usr/local/etc/php/7.4/conf.d/xdebug.ini.dis /usr/local/etc/php/7.4/conf.d/xdebug.ini;valet restart"
 alias xdoff="mv /usr/local/etc/php/7.4/conf.d/xdebug.ini /usr/local/etc/php/7.4/conf.d/xdebug.ini.dis;valet restart"
+
+bindkey "^[^[[C" forward-word
+bindkey "^[^[[D" backward-word
+

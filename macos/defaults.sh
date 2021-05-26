@@ -30,15 +30,6 @@ sudo systemsetup -settimezone "Europe/Stockholm" > /dev/null
 # Set standby delay to 1 hour(s) (default is 1 hour)
 sudo pmset -a standbydelay 3600
 
-# Disable Sudden Motion Sensor
-# sudo pmset -a sms 0
-
-# Disable audio feedback when volume is changed
-# defaults write com.apple.sound.beep.feedback -bool false
-
-# Disable the sound effects on boot
-# sudo nvram SystemAudioVolume=" "
-
 # Menu bar: show battery percentage
 defaults write com.apple.menuextra.battery ShowPercent YES
 
