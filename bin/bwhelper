@@ -93,6 +93,7 @@ function get($row)
 	if ($existing) {
 		exec("mkdir -p " . dirname($resolvedPath));
 		file_put_contents($resolvedPath, $existing->notes);
+		chmod($resolvedPath, 0600);
 	}
 }
 
