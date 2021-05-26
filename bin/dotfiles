@@ -15,7 +15,8 @@ sub_help () {
   echo "   macos            Apply macOS system defaults"
   echo "   test             Run tests"
   echo "   update           Update packages and pkg managers (OS, brew, npm, gem)"
-  echo "   sync             Sync current dotfiles to the repo"
+  echo "   copy             Get .dotfiles from this repo and Bitwarden to home folder"  
+  echo "   sync             Sync current dotfiles back to the repo and Bitwarden"
 }
 
 sub_edit () {
@@ -54,19 +55,48 @@ sub_sync () {
   for FILE in $(cat sync/runcom); do 
     if [[ $FILE == *"/"* ]]; then
       FOLDER=`echo $FILE | awk -F "/" '{print $1}'`
-      echo $FOLDER $FILE 
       mkdir -p runcom/$FOLDER
-      rsync ~/$FILE runcom/$FOLDER/      
+      rsync -a ~/$FILE runcom/$FOLDER/      
     else
-      rsync ~/$FILE runcom/      
+      rsync -a ~/$FILE runcom/      
     fi
   done 
+  
   for FILE in $(cat sync/config); do
     FOLDER=`echo $FILE | awk -F "/" '{print $1}'`
-    echo $FOLDER $FILE 
     mkdir -p config/$FOLDER
     rsync ~/$FILE config/$FOLDER/
-  done   
+  done
+
+  if ! bin/bwhelper status; then
+    echo Can\t sync secrets to BitWarden - halting 
+    exit 1
+  fi
+
+  bw sync
+  IFS=$'\n';
+  for FILE in $(cat sync/keys); do
+    bin/bwhelper put $FILE
+  done
+
+  bw sync
+
+}
+
+sub_copy() {
+  rsync -a runcom/ ~/dotfiles
+  
+  if ! bin/bwhelper status; then
+    echo Can\t sync secrets from BitWarden - halting 
+    exit 1
+  fi
+
+  bw sync
+
+  IFS=$'\n';
+  for FILE in $(cat sync/keys); do
+    bin/bwhelper get $FILE
+  done
 }
 
 sub_dock () {
