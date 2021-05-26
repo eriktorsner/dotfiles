@@ -15,6 +15,7 @@ brew "wget"
 brew "gzip"
 brew "dmg2img"
 brew "poppler"
+brew "jq"
 
 brew "php@7.2"
 brew "php@7.4"
