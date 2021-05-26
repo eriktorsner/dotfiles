@@ -57,6 +57,7 @@ node-packages:
 	npm install -g $(shell cat install/npmfile)
 
 after:
+	chmod +x install/after
 	install/after
 
 test:
