@@ -11,9 +11,7 @@ export ACCEPT_EULA=Y
 
 all: $(OS)
 
-macos: sudo core-macos packages link
-
-linux: core-linux link
+macos: sudo core-macos packages
 
 core-macos: brew git
 
