@@ -51,7 +51,7 @@ sub_macos () {
   echo "Done. Some changes may require a logout/restart to take effect."
 }
 
-sub_restore () {
+sub_sync () {
   for FILE in $(cat sync/runcom); do 
     if [[ $FILE == *"/"* ]]; then
       FOLDER=`echo $FILE | awk -F "/" '{print $1}'`
@@ -83,7 +83,7 @@ sub_restore () {
 
 }
 
-sub_copy() {
+sub_restore() {
   rsync -a runcom/ ~
   
   if ! bin/bwhelper status; then
