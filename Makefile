@@ -57,7 +57,7 @@ node-packages:
 	npm install -g $(shell cat install/npmfile)
 
 after:
-	source install/after
+	install/after
 
 test:
 	. $(NVM_DIR)/nvm.sh; bats test
