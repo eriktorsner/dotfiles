@@ -1,0 +1,17 @@
+# This is Git's per-user configuration file.
+
+[user]
+name = Erik Torsner
+email = erik@torgesta.com
+[alias]
+	add-commit = !git add -A && git commit
+	add-commit-push = !git add -A && git commit && git push
+[core]
+	autocrlf = input
+[filter "lfs"]
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+[init]
+	defaultBranch = main
