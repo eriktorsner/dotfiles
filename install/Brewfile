@@ -16,7 +16,6 @@ brew "gzip"
 brew "dmg2img"
 brew "poppler"
 brew "jq"
-brew "syncthing"
 
 brew "php@7.2"
 brew "php@7.4"

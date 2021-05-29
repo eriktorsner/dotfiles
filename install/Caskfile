@@ -5,6 +5,7 @@ tap "homebrew/cask-versions"
 
 cask "iterm2"
 cask "dropbox"
+cask "nextcloud"
 cask "bitwarden"
 cask "google-chrome"
 cask "brave-browser"
