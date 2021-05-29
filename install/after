@@ -1,6 +1,6 @@
 # Valet
-if ! ($HOME/.composer/vendor/bin/valet | grep -q uninstall) then
+if ! ($HOME/.config/composer/vendor/bin/valet | grep -q uninstall) then
 	echo "Setting up Laravel valet"
-	$HOME/.composer/vendor/bin/valet install
-	$HOME/.composer/vendor/bin/valet tld local
+	$HOME/.config/composer/vendor/bin/valet install
+	$HOME/.config/composer/vendor/bin/valet tld local
 fi

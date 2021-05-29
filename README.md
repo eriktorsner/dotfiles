@@ -18,6 +18,7 @@ Since we're lazy, add passwordless sudo
 
 ```bash
 export VISUAL=nano
+sudo dscl . -append /groups/wheel GroupMembership <username>
 sudo visudo /etc/sudoers.d/wheel
 ```
 
@@ -27,21 +28,20 @@ add the line
 %wheel    ALL=(ALL)   NOPASSWD: ALL
 ```
 
-The Xcode Command Line Tools includes `git` and `make` (not available on stock macOS). Now there are two options:
+The Xcode Command Line Tools includes `git` and `make` (not available on stock macOS).
 
-Alternatively, clone manually into the desired location:
+Clone manually into the desired location:
 
 ```bash
-git clone https://github.com/eriktorsner/dotfiles.git ~/.dotfiles
+mkdir ~/src
+git clone https://github.com/eriktorsner/dotfiles.git ~/src/dotfiles
 ```
 
-
-Use the [Makefile](./Makefile) to install everything [listed above](#package-overview), and symlink [runcom](./runcom)
-and [config](./config) (using [stow](https://www.gnu.org/software/stow/)):
+Use the [Makefile](./Makefile) to install all software. This takes a while...
 
 ```bash
-cd ~/.dotfiles
-make
+cd ~/src/dotfiles
+make packages
 ```
 
 ## Post-Installation
