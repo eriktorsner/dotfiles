@@ -44,6 +44,23 @@ cd ~/src/dotfiles
 make packages
 ```
 
+## Set up Bitwarden cli
+
+To get the dotfiles including secrets like ssh keys we need to set up bitwarden and get a BW_SESSION key into the env
+
+```bash
+bw login
+export BW_SESSION=`bw unlock --raw`
+```
+
+## Move all the dotfiles into place
+
+```bash
+bin/dotfiles restore
+```
+
+
+
 ## Post-Installation
 
 - `dotfiles dock` (set [Dock items](./macos/dock.sh))
