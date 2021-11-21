@@ -22,6 +22,7 @@ cask "tinkerwell"
 cask "toggl-track"
 cask "virtualbox"
 cask "docker"
+cask "chromedriver"
 
 cask "vlc"
 cask "spotify"
