@@ -22,9 +22,9 @@ brew "php@7.4"
 brew "php"
 brew "composer"
 brew "brew-php-switcher"
+brew "php-code-sniffer"
 brew "php-cs-fixer"
 brew "wp-cli"
-brew "mailhog"
 brew "dnsmasq"
 
 brew "perl"
@@ -32,6 +32,7 @@ brew "rbenv"
 brew "pyenv"
 
 brew "git"
+brew "git-extras"
 brew "hub"
 brew "subversion"
 
